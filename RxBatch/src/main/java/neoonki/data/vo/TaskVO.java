@@ -1,48 +1,73 @@
 package neoonki.data.vo;
 
+import javax.management.RuntimeErrorException;
+
+import neoonki.util.DateUtil;
+
 public class TaskVO {
+	
 	private String taskName;
 	private boolean isRun;
 	private String lastRuntimeEnd;
 	private String lastRuntimeStart;
 	private int lastRunErrorCount;
-	private int lastRunSuccess;
+	private int lastRunSuccessCount;
 	
+	public TaskVO(String taskName) {
+		this.taskName = taskName;
+		isRun = false;
+		lastRuntimeEnd = null;
+		lastRuntimeStart = null;
+		lastRunErrorCount = 0;
+		lastRunSuccessCount = 0;
+		
+	}
 	
+	public boolean isRun() {
+		return this.isRun;
+	}
+	
+	public void update(int successCount, int errorCount) {
+		this.lastRunSuccessCount = successCount;
+		this.lastRunErrorCount = errorCount;
+	}
+	
+	public void start() {
+		if(this.isRun) {
+			throw new RuntimeErrorException(new Error(), "[" + taskName + "] is already running!");
+		} else {
+			isRun = true;
+			lastRuntimeStart = DateUtil.getCurrentStringDate();
+		}
+	}
+	
+	public void end() {
+		if(!this.isRun) {
+			throw new RuntimeErrorException(new Error(), "[" + taskName + "] is not running!");
+		} else {
+			isRun = false;
+			lastRuntimeEnd = DateUtil.getCurrentStringDate();
+		}
+	}
+
 	public String getTaskName() {
 		return taskName;
 	}
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
-	}
-	public boolean isRun() {
-		return isRun;
-	}
-	public void setRun(boolean isRun) {
-		this.isRun = isRun;
-	}
+
 	public String getLastRuntimeEnd() {
 		return lastRuntimeEnd;
 	}
-	public void setLastRuntimeEnd(String lastRuntimeEnd) {
-		this.lastRuntimeEnd = lastRuntimeEnd;
-	}
+
 	public String getLastRuntimeStart() {
 		return lastRuntimeStart;
 	}
-	public void setLastRuntimeStart(String lastRuntimeStart) {
-		this.lastRuntimeStart = lastRuntimeStart;
-	}
+
 	public int getLastRunErrorCount() {
 		return lastRunErrorCount;
 	}
-	public void setLastRunErrorCount(int lastRunErrorCount) {
-		this.lastRunErrorCount = lastRunErrorCount;
+
+	public int getLastRunSuccessCount() {
+		return lastRunSuccessCount;
 	}
-	public int getLastRunSuccess() {
-		return lastRunSuccess;
-	}
-	public void setLastRunSuccess(int lastRunSuccess) {
-		this.lastRunSuccess = lastRunSuccess;
-	}
+
 }

@@ -11,11 +11,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
 @SpringBootApplication
+@EnableAsync
 public class Application {
 	Logger log = Logger.getLogger(this.getClass());
 	public static void main(String[] args) {
