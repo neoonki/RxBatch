@@ -3,6 +3,7 @@ package neoonki;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,6 +13,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import neoonki.data.rx.TaskDataHouse;
+import neoonki.data.rx.TaskManager;
+import neoonki.task.SampleTask;
+import neoonki.task.btc.GetBTCInfoTask;
 
 @Configuration
 @EnableAutoConfiguration
@@ -23,6 +29,12 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+	
+	@Autowired
+    private TaskManager taskManager;
+	
+	@Autowired
+    private TaskDataHouse taskDataHouse;
 
 	@Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
@@ -33,7 +45,10 @@ public class Application {
             for (String beanName : beanNames) {
             	log.info(beanName);
             }
-
+            taskDataHouse.add(GetBTCInfoTask.class, GetBTCInfoTask.class.getName());
+//            taskDataHouse.add(SampleTask.class);
+            
+            taskManager.start(ctx);
         };
     }
 }

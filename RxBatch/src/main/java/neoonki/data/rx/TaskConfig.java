@@ -20,10 +20,10 @@ public class TaskConfig {
 	static Logger log = Logger.getLogger(TaskConfig.class);
 	
 	@Bean(name="batchJobTaskManager", autowire = Autowire.BY_NAME)
-	public TaskData TaskManager () {
+	public TaskDataHouse TaskManager () {
 		log.debug("create taskManager");
-		TaskData taskData = new TaskData();
-		return taskData;
+		TaskDataHouse taskDataHouse = new TaskDataHouse();
+		return taskDataHouse;
 	}
 	
 	@Bean(name = "threadPoolTaskExecutor", autowire = Autowire.BY_NAME)
@@ -83,6 +83,7 @@ public class TaskConfig {
                 @Override
                 public void run() {
                     try {
+                    	log.info("run");
                         task.run();
                     } catch (Exception ex) {
                         handle(ex);
